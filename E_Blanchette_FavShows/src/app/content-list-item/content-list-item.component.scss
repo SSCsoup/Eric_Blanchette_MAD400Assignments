@@ -1,0 +1,77 @@
+:host {
+  border: 1px solid #000;
+  width: 300px;
+  margin: 16px;
+  padding: 16px;
+  display: inline-block;
+
+  &.even-show {
+    background-color: #edb9e8;
+  }
+}
+:host.odd-show {
+  background-color: #b0e0e6;
+}
+
+@mixin bordered-button-span {
+  border-radius: 10px;
+  border: 2px solid crimson;
+  padding: 8px;
+  background-color: rgba(220, 20, 60, 0.5);
+  display: inline-block;
+}
+
+h2 {
+  text-decoration: underline;
+  color: darkred;
+  text-align: center;
+}
+img {
+  margin: 0 auto;
+  display: block;
+}
+
+p {
+  border-top: 1px solid #aaa;
+  padding-top: 16px;
+}
+div.meta-data {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+span.author {
+  @include bordered-button-span; 
+  color: #fff;
+
+  &::before {
+    content: "Author: ";
+    color: #000;
+  }
+}
+span.type {
+  text-align: right;
+
+  &::before {
+    content: "Genre:";
+    display: block;
+    border-bottom: 1px dashed #333;
+  }
+}
+div.tags {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 8px 0;
+
+  span {
+    @include bordered-button-span; 
+    margin-bottom: 8px;
+    color: rgb(40, 102, 48);
+  }
+  span::before {
+    content: "#";
+    color: #fff;
+  }
+}
