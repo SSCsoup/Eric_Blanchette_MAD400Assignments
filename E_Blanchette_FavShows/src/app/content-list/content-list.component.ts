@@ -1,53 +1,52 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IContent } from '../models/icontent';
+import { ShowService } from '../service/show.service';
 
 @Component({
   selector: 'app-content-list',
   templateUrl: './content-list.component.html',
   styleUrls: ['./content-list.component.scss']
 })
-export class ContentListComponent {
+export class ContentListComponent implements OnInit{
   showList: IContent[];
 
-  constructor() {
-    this.showList = [{
-      id: 0,
-        title: "Attack on Titan",
-        description: "anime about kid who wants to fight titans",
-        author: "Hajime Isayama",
-        imgSrc: "https://upload.wikimedia.org/wikipedia/en/thumb/d/d6/Shingeki_no_Kyojin_manga_volume_1.jpg/220px-Shingeki_no_Kyojin_manga_volume_1.jpg",
-        type: "Shonen",
-        tags: ["Horror", "Anime", "Drama"]
-      },
-      {
-        id: 1,
-        title: "One Peice",
-        description: "anime about a kid who wants to become the king of pirates",
-        author: "Eiichiro Oda",
-        imgSrc: "https://upload.wikimedia.org/wikipedia/en/thumb/9/90/One_Piece%2C_Volume_61_Cover_%28Japanese%29.jpg/220px-One_Piece%2C_Volume_61_Cover_%28Japanese%29.jpg",
-        type: "Shonen",
-        tags: ["Anime", "Fantasy", "Comedy"]
-      },
-      {
-        id: 2,
-        title: "Demon Slayer",
-        description: "a kid who slays demons",
-        author: "Koyoharu Gotouge",
-        imgSrc: "https://upload.wikimedia.org/wikipedia/en/thumb/0/09/Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg/220px-Demon_Slayer_-_Kimetsu_no_Yaiba%2C_volume_1.jpg",
-        type: "Shonen",
-        tags: ["Anime", "Adventure", "Fantasy"]
-      },
-      {
-        id: 3,
-        title: "Toradora",
-        description: "two teenagers fall in love",
-        author: "Yuyuko Takemiya",
-        imgSrc: "https://upload.wikimedia.org/wikipedia/en/thumb/c/cd/Toradora%21_light_novel_volume_1_cover.jpg/220px-Toradora%21_light_novel_volume_1_cover.jpg",
-        type: "Drama",
-        tags: ["Slice of life", "Drama", "Comedy"]
-      
-    }]
-    
-        
+  constructor(private showService: ShowService) {
+    this.showList = [];
   }
+
+  ngOnInit(): void {
+    this.showList.getContent().subscribe((shows: IContent[]) => {
+      console.log("Getting the game list");
+      this.showList = shows;
+    });
+
+    this.showList.getContentItem(1).subscribe((show: IContent) => {
+      console.log("Testing getting a single content item: ", show);
+    });
+
+    let testShowToUpdate: IContent = {
+      id: 1, 
+      title: "",
+      description: "",
+      author: "",
+      imgSrc: "",
+      type: "",
+    };
+
+    this.showList.addContentItem(testShowToAdd).subscribe((shows: IContent[]) => {
+         console.log("Testing adding a game to the array: ", shows);
+       });
+
+    this.showList.updateContentItem(testShowToUpdate).subscribe((shows: IContent[]) => {
+      console.log("Testing updating a show in the array - Attack on Titan should be replaced: ", shows);
+    });
+
+
+    this.showList.deleteContentItem(2).subscribe((show: IContent) => {
+      console.log("Testing deleting a single item: ", show);
+    });
+
+
+  }
+  
 }
